@@ -1,140 +1,155 @@
-'use client'
+'use client';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { SignUpFormValidation } from '../../validations';
+import { z } from 'zod';
+import useAuthLogin from '../../hooks/useAuthLogin';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ILoginRequestDto, IRegisterRequestDto } from '../../types';
+import { APP_ROUTER } from '@/common/config';
+import useAuthRegister from '../../hooks/useAuthRegister';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import type { SubmitHandler } from 'react-hook-form'
-import { FormProvider, useForm } from 'react-hook-form'
-import type { z } from 'zod'
+type SignUpFormFields = z.infer<typeof SignUpFormValidation>
 
-import { APP_ROUTER } from '@/common/config'
-import useAuthRegister from '@/view/auth/hooks/useAuthRegister'
-import { type IRegisterRequestDto } from '@/view/auth/types'
-import { SignUpFormValidation } from '@/view/auth/validations'
 
-type FormFields = z.infer<typeof SignUpFormValidation>
-
-function SignUpForm() {
+export default function SignUpForm() {
+	// const { users, handleLogin, isLoggedIn } = useStore();
 	const router = useRouter()
-	const { mutate: handleRegister, isSuccess, isPending, data: registerData } = useAuthRegister()
-
-	const methods = useForm<FormFields>({ resolver: zodResolver(SignUpFormValidation) })
-
-	const formFields = [
-		{ type: 'text', name: 'fullName', placeholder: 'Enter fullname' },
-		{ type: 'text', name: 'phoneNumber', placeholder: 'Enter phoneNumber' },
-		{ type: 'text', name: 'email', placeholder: 'Enter email' },
-		{ type: 'text', name: 'username', placeholder: 'Enter username' },
-		{ type: 'text', name: 'password', placeholder: 'Enter password' },
-	]
-
-	const onSubmit: SubmitHandler<FormFields> = (formData) => {
-		handleRegister(formData as IRegisterRequestDto)
+	const { mutate: handleRegister, isSuccess, isPending, data: signupData } = useAuthRegister()
+	const methods = useForm<SignUpFormFields>({ resolver: zodResolver(SignUpFormValidation) })
+	const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormFields>()
+	const onSubmit: SubmitHandler<SignUpFormFields> = (formData) => {
+		handleRegister(formData as unknown as IRegisterRequestDto)
 	}
-
 	useEffect(() => {
-		if (registerData?.statusCode === 200) {
+		if (signupData?.errorCode === "OK") {
 			methods.reset()
 			router.push(APP_ROUTER.paths.center.signIn.path)
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSuccess])
 
 	return (
-		<FormProvider {...methods}>
-			<form
-				onSubmit={methods.handleSubmit(onSubmit)}
-				className="flex max-w-[385px] flex-col gap-6 rounded border bg-[var(--color-login-form-bg)] p-3"
-			>
-				<section className="sign-up-section h-[93px] !py-0">
-					<Image
-						src="/assets/auth/imgs/auth_form_header_img.png"
-						alt="auth_form_header_img"
-						width={40}
-						height={10}
-						className="h-auto"
-					/>
-					<p className="text-2xl font-medium uppercase text-[var(--color-surface-999)]">
-						Sign up new account
-					</p>
-				</section>
+		<Grid container component="main" sx={{ height: '100vh' }}>
+			<CssBaseline />
+			<Grid
+				item
+				xs={false}
+				sm={4}
+				md={7}
+				sx={{
+					backgroundImage: 'url(background-login.png)',
+					backgroundRepeat: 'no-repeat',
+					backgroundColor: (t) =>
+						t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+					backgroundSize: 'cover',
+					backgroundPosition: 'center',
+				}}
+			/>
+			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+				<Box
+					sx={{
+						my: 8,
+						mx: 4,
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+					}}
+				>
+					<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+						<LockOutlinedIcon />
+					</Avatar>
+					<Typography component="h1" variant="h5">
+						Register
+					</Typography>
+					<Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
 
-				<section className="sign-up-section gap-4">
-					{/* <div className="flex w-full flex-col gap-2">
-					<TextBoxComponent {...register('fullName')} placeholder="FullName" floatLabelType="Always" />
-					{errors.fullName && <span className="sign-up-error">{errors.fullName.message}</span>}
-				</div>
-				<div className="flex w-full flex-col gap-2">
-					<TextBoxComponent {...register('phoneNumber')} placeholder="Phone number" floatLabelType="Always" />
-					{errors.phoneNumber && <span className="sign-up-error">{errors.phoneNumber.message}</span>}
-				</div>
-				<div className="flex w-full flex-col gap-2">
-					<TextBoxComponent {...register('email')} placeholder="Email" floatLabelType="Always" />
-					{errors.email && <span className="sign-up-error">{errors.email.message}</span>}
-				</div>
-				<div className="flex w-full flex-col gap-2">
-					<TextBoxComponent {...register('username')} placeholder="Username" floatLabelType="Always" />
-					{errors.username && <span className="sign-up-error">{errors.username.message}</span>}
-				</div>
-				<div className="flex w-full flex-col gap-2">
-					<TextBoxComponent {...register('password')} placeholder="Password" floatLabelType="Always" />
-					{errors.password && <span className="sign-up-error">{errors.password.message}</span>}
-				</div> */}
 
-					{formFields.map((field) => {
-						return (
-							<div key={field.name} className="flex w-full flex-col gap-2">
-								
-							</div>
-						)
-					})}
-				
+						<TextField
+							margin="normal"
+							required
+							fullWidth
+							size='small'
+							id="name"
+							label="Name"
+							autoComplete="name"
+							{...register('name')}
+							autoFocus
+						/>
+						<TextField
+							margin="normal"
+							required
+							fullWidth
+							size='small'
+							id="phone-number"
+							label="Phone number"
+							autoComplete="phone number"
+							{...register('phoneNumber')}
+							autoFocus
+						/>
+						<TextField
+							margin="normal"
+							required
+							fullWidth
+							size='small'
+							{...register('email')}
+							label="Email"
+							type="email"
+							id="email"
+						/>
+						<TextField
+							margin="normal"
+							required
+							fullWidth
+							size='small'
+							id="username"
+							label="Username"
+							autoComplete="Username"
+							{...register('username')}
+							autoFocus
+						/>
 
-					<div>
-						Already have an account?{' '}
-						<Link
-							className="w-full justify-start text-sm font-semibold text-[var(--color-text-link)]"
-							href={APP_ROUTER.paths.center.signIn.path}
+						<TextField
+							margin="normal"
+							required
+							fullWidth
+							size='small'
+							{...register('password')}
+							label="Password"
+							type="password"
+							id="password"
+						/>
+
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							sx={{ mt: 3, mb: 2 }}
 						>
-							Login here{' '}
-						</Link>
-					</div>
-				</section>
-
-				{/* <section className="sign-up-section gap-2 border-t">
-				<span className="text-center">Or continue with</span>
-				<div className="flex w-full items-center justify-center gap-3">
-					<ButtonComponent className="e-normal h-[33px] w-[145px]">
-						<div className="flex items-center gap-3">
-							<Image
-								src="/assets/auth/imgs/gg_icon.svg"
-								alt="auth_form_header_img"
-								width={20}
-								height={20}
-								className="h-auto"
-							/>
-							<span>Google</span>
-						</div>
-					</ButtonComponent>
-					<ButtonComponent className="e-normal h-[33px] w-[145px]">
-						<div className="flex items-center gap-3">
-							<Image
-								src="/assets/auth/imgs/git_icon.svg"
-								alt="auth_form_header_img"
-								width={20}
-								height={20}
-								className="h-auto"
-							/>
-							<span>Github</span>
-						</div>
-					</ButtonComponent>
-				</div>
-			</section> */}
-			</form>
-		</FormProvider>
-	)
+							Sign Up
+						</Button>
+						<Grid container justifyContent="flex-end">
+							<Grid item>
+								<Link href="/sign-in" variant="body1">
+									{"Already have an account? Sign In"}
+								</Link>
+							</Grid>
+						</Grid>
+					</Box>
+				</Box>
+			</Grid>
+		</Grid>
+	);
 }
-
-export default SignUpForm

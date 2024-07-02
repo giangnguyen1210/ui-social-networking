@@ -11,14 +11,14 @@ interface IAuthTemplate {
 }
 
 function AuthTemplate({ children }: IAuthTemplate) {
-	const accessToken = Cookies.get('accessToken')
+	const token = Cookies.get('token')
 
-	if (accessToken) {
-		redirect(APP_ROUTER.paths.admin.dashboard.path)
+	if (token) {
+		redirect(APP_ROUTER.paths.home.home.path)
 	}
 
 	return (
-		<div className="flex h-screen w-full items-center justify-center bg-[var(--color-surface-100)]">{children}</div>
+		<div>{children}</div>
 	)
 }
 

@@ -1,5 +1,6 @@
 export interface IHttpResponseDto<T> {
-	statusCode: number
-	message: string
+	errorCode: string
+	errorDesc: string
 	data: T
+	accessToken: string
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import { Toaster } from 'react-hot-toast'
 
 import { ReactQueryClientProvider } from '@/components/providers/query-client-provider/ReactQueryClientProvider'
-import ThemeProvider from '@/components/providers/theme-provider'
+import { AppModalProvider } from '../modals/app-modal'
 
 interface IAppProvider {
 	children: React.ReactNode
@@ -11,8 +11,9 @@ interface IAppProvider {
 function AppProvider({ children }: IAppProvider) {
 	return (
 		<ReactQueryClientProvider>
-			<ThemeProvider>{children}</ThemeProvider>
+			{children}
 			<Toaster />
+			<AppModalProvider/>
 		</ReactQueryClientProvider>
 	)
 }

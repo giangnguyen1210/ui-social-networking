@@ -1,0 +1,28 @@
+.profile__detail{
+    &--header{
+        @apply flex p-4;
+        &-info{
+            @apply pl-20;
+            .profile__username{
+                @apply text-xl;
+            }
+            .profile__name{
+                @apply text-base font-semibold;
+            }
+            .profile__username,
+            .profile__name,
+            .profile__storage,
+            .profile__edit,
+            .profile__follower,
+            .profile__following{
+                @apply mt-3
+            }
+        }
+    }
+    &--content{
+        @apply mt-10;
+        &--posts{
+
+        }
+    }
+}

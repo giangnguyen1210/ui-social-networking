@@ -10,13 +10,14 @@ export default function useAuthRegister() {
 		mutationKey: ['useAuthRegister'],
 		mutationFn: (_user: IRegisterRequestDto) => {
 			return AuthService.register(_user)
+			
 		},
-		onSuccess: (res: IHttpResponseDto<IRegisterResponseDto>) => {
-			if (res.statusCode === 200) {
+		onSuccess: (res: IHttpResponseDto<IRegisterRequestDto>) => {
+			if (res.errorCode === "OK") {
 				toast.success('Registration successful!')
 			}
-			if (res.statusCode !== 200) {
-				toast.error(res.message)
+			if (res.errorCode !== "OK") {
+				toast.error(res.errorDesc)
 			}
 		},
 	})

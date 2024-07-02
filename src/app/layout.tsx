@@ -1,4 +1,9 @@
-
+/* eslint-disable @next/next/no-page-custom-font */
+/* eslint-disable @next/next/google-font-display */
+import '/public/assets/scss/global.css'
+import '../styles/globals.css'
+import '/public/assets/scss/base/base.scss'
+import 'react-responsive-modal/styles.css';
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
@@ -39,9 +44,8 @@ export default function RootLayout(props: { children: React.ReactNode; params: {
 	return (
 		<html suppressHydrationWarning lang={props.params.locale}>
 			<head>
-				{/* eslint-disable-next-line @next/next/no-css-tags */}
 				<link id="app-themes-cdn" rel="stylesheet" />
-				{/* eslint-disable-next-line @next/next/google-font-display, @next/next/no-page-custom-font */}
+				 {/* eslint-disable-next-line @next/next/no-page-custom-font, @next/next/no-page-custom-font */}
 				<link
 					rel="stylesheet"
 					href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"

@@ -1,130 +1,141 @@
-'use client'
+'use client';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LoginFormValidation } from '../../validations';
+import { z } from 'zod';
+import useAuthLogin from '../../hooks/useAuthLogin';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ILoginRequestDto } from '../../types';
+import { APP_ROUTER } from '@/common/config';
+import Cookies from 'js-cookie'
+import { useUserGetInfo } from '../../../user/hooks/useUserGetInfo';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { enableRipple } from '@syncfusion/ej2-base'
-import { ButtonComponent } from '@syncfusion/ej2-react-buttons'
-import Image from 'next/image'
-import Link from 'next/link'
-import type { SubmitHandler } from 'react-hook-form'
-import { FormProvider, useForm } from 'react-hook-form'
-import type { z } from 'zod'
 
-import { APP_ROUTER } from '@/common/config'
-import { RHFDynamicInput } from '@/components/inputs'
-import { TestLoginFormValidation } from '@/view/auth/validations'
+type LoginFormFields = z.infer<typeof LoginFormValidation>
 
-type LoginFormFields = z.infer<typeof TestLoginFormValidation>
-enableRipple(true)
 
-function AuthLoginForm() {
-	const methods = useForm<LoginFormFields>({ resolver: zodResolver(TestLoginFormValidation) })
+export default function AuthLoginForm() {
+    // const { users, handleLogin, isLoggedIn } = useStore();
+    const router = useRouter()
+    const { mutate: handleLogin, isSuccess, isPending, data: loginData } = useAuthLogin()
+    const [dataSignIn, setDataSignIn] = useState<ILoginRequestDto>()
+    const methods = useForm<LoginFormFields>({ resolver: zodResolver(LoginFormValidation) })
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormFields>()
+    const onSubmit: SubmitHandler<LoginFormFields> = (formData) => {
+        setDataSignIn(formData);
+        handleLogin(formData as unknown as ILoginRequestDto)
+    }
+    const username = dataSignIn?.username as string;
 
-	const onSubmit: SubmitHandler<LoginFormFields> = (formData) => {
-		// eslint-disable-next-line no-console
-		console.log(formData)
-	}
+    useEffect(() => {
+        if (isSuccess && loginData?.errorCode === "OK") {
+            Cookies.set('username', username);
+            router.push(APP_ROUTER.paths.home.home.path);
+        }
+    }, [isSuccess, loginData, router, username]);
+    // const { data: userData, isSuccess: successUserInfo } = useUserGetInfo({ username });
 
-	const formFields = [
-		{ type: 'text', name: 'username', placeholder: 'Enter username' },
-		{ type: 'text', name: 'password', placeholder: 'Enter password' },
-		{ type: 'checkbox', name: 'remember', label: 'Remeber me' },
-		{
-			type: 'radio',
-			name: 'gender',
-			radioOptions: [
-				{ value: 'male', label: 'Male', id: 'gender_01' },
-				{ value: 'female', label: 'Female', id: 'gender_02' },
-			],
-		},
-		{ type: 'date', name: 'birth', placeholder: 'Date of birth' },
-		{ type: 'text-area', name: 'contact', placeholder: 'Contact us' },
-	]
+    // Cookies.set('id', userData?.data?.id);
 
-	return (
-		<FormProvider {...methods}>
-			<form
-				onSubmit={methods.handleSubmit(onSubmit)}
-				className="my-form flex max-w-[385px] flex-col gap-6 rounded border bg-[var(--color-login-form-bg)] p-3"
-			>
-				<section className="login-section h-[93px] !py-0">
-					<Image
-						src="/assets/auth/imgs/auth_form_header_img.png"
-						alt="auth_form_header_img"
-						width={40}
-						height={10}
-						className="h-auto"
-					/>
-					<p className="text-2xl font-medium uppercase text-[var(--color-surface-999)]">
-						Sign in to your account
-					</p>
-				</section>
+    // Cookies.set('id', userData?.data?.id);
 
-				<section className="login-section gap-4">
-					{formFields.map((field) => {
-						return (
-							<div key={field.name} className="flex w-full flex-col gap-2">
-								<RHFDynamicInput
-									name={field.name}
-									type={field.type as 'text' | 'checkbox' | 'radio'}
-									placeholder={field?.placeholder}
-									label={field?.label}
-									radioOptions={field?.radioOptions}
-								/>
-							</div>
-						)
-					})}
+    return (
+        <Grid container component="main" sx={{ height: '100vh' }}>
+            <CssBaseline />
+            <Grid
+                item
+                xs={false}
+                sm={4}
+                md={7}
+                sx={{
+                    backgroundImage: 'url(background-login.png)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundColor: (t) =>
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            />
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Box
+                    sx={{
+                        my: 8,
+                        mx: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
 
-					<Link
-						className="justify-start text-sm font-semibold text-[var(--color-text-link)]"
-						href={APP_ROUTER.paths.center.signUp.path}
-					>
-						Don&apos;t have an account?
-					</Link>
 
-					<ButtonComponent type="submit" className="e-primary w-full">
-						SUBMIT
-					</ButtonComponent>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            autoComplete="Username"
+                            {...register('username')}
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            {...register('password')}
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
 
-					<Link
-						className="w-full text-sm font-semibold text-[var(--color-text-link)]"
-						href={APP_ROUTER.paths.center.forgotPassword.path}
-					>
-						Forgot your password?
-					</Link>
-				</section>
-
-				{/* <section className="login-section gap-2 border-t">
-				<span className="text-center">Or continue with</span>
-				<div className="flex w-full items-center justify-center gap-3">
-					<ButtonComponent className="e-normal h-[33px] w-[145px]">
-						<div className="flex items-center gap-3">
-							<Image
-								src="/assets/auth/imgs/gg_icon.svg"
-								alt="auth_form_header_img"
-								width={20}
-								height={20}
-								className="h-auto"
-							/>
-							<span>Google</span>
-						</div>
-					</ButtonComponent>
-					<ButtonComponent className="e-normal h-[33px] w-[145px]">
-						<div className="flex items-center gap-3">
-							<Image
-								src="/assets/auth/imgs/git_icon.svg"
-								alt="auth_form_header_img"
-								width={20}
-								height={20}
-								className="h-auto"
-							/>
-							<span>Github</span>
-						</div>
-					</ButtonComponent>
-				</div>
-			</section> */}
-			</form>
-		</FormProvider>
-	)
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary" />}
+                            label="Remember me"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign In
+                        </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="#" variant="body2">
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link href="/sign-up" variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
+            </Grid>
+        </Grid>
+    );
 }
-
-export default AuthLoginForm

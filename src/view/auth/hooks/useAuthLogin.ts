@@ -10,16 +10,17 @@ export default function useAuthLogin() {
 	return useMutation({
 		mutationKey: ['useAuthLogin'],
 		mutationFn: (_user: ILoginRequestDto) => {
-			return AuthService.login(_user)
+			return AuthService.signIn(_user)
 		},
-		onSuccess: (res: IHttpResponseDto<ILoginResponseDto>) => {
-			if (res.statusCode === 200) {
-				if (res.data.accessToken) Cookies.set('accessToken', res.data.accessToken)
-				if (res.data.refreshToken) Cookies.set('refreshToken', res.data.refreshToken)
-				toast.success('Login successful!')
+		onSuccess: (res: IHttpResponseDto<ILoginRequestDto>) => {
+			if (res.errorCode === "OK") {
+				if (res.accessToken) {
+					Cookies.set('token', res.accessToken)
+					toast.success('Login successful!')
+				}
 			}
-			if (res.statusCode !== 200) {
-				toast.error(res.message)
+			if (res.errorCode !== "OK") {
+				toast.error(res.errorDesc)
 			}
 		},
 	})

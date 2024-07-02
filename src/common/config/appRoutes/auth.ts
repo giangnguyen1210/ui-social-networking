@@ -1,5 +1,6 @@
 export const authApiRoute = {
-	login: '/auth/v1/UserLogin',
-	register: '/auth/v1/UserRegister',
-	resetPassword: 'auth/v1/UserChangePassword',
+	signIn: '/api/auth/sign-in',
+	register: '/api/auth/sign-up',
+	sendEmailVerify: '/api/auth/send-email-verify',
+	activateAccount: '/api/auth/activate-account',
 }

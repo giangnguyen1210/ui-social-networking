@@ -2,28 +2,27 @@
 export interface ILoginRequestDto {
 	username: string
 	password: string
-	authType: AuthEnum.authType
 }
 
 export interface ILoginResponseDto {
-	accessToken: string
-	tokenType: string
-	refreshToken: string
+	errorCode: string
+	errorDesc: string
+	token: string
 }
 
 // REGISTER
 export interface IRegisterRequestDto {
-	fullName: string
+	name: string
 	username: string
 	password: string
 	email: string
 	phoneNumber: string
-	authType: AuthEnum.authType
+	gender: number;
 }
 
 export interface IRegisterResponseDto {
-	succeeded: true
-	errors: any[]
+	errorCode: string
+	errorDesc: string
 }
 
 // RESET PASSWORD
@@ -35,8 +34,4 @@ export interface IResetPasswordRequestDto {
 export interface IResetPasswordResponseDto {
 	succeeded: true
 	errors: any[]
-}
-
-export enum AuthEnum {
-	authType = 1,
 }

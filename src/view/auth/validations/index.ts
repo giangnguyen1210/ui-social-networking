@@ -9,7 +9,8 @@ export const LoginFormValidation = z.object({
 })
 
 export const SignUpFormValidation = z.object({
-	fullName: z.string({ message: 'This field is require' }),
+	name: z.string({ message: 'This field is require' }),
+	gender: z.string({ message: 'This field is require' }),
 	username: z.string({ message: 'This field is require' }),
 	password: z.string({ message: 'This field is require' }).min(8, 'Password must be at least 8 characters long'),
 	email: z.string({ message: 'This field is require' }).email('Invalid e-mail format'),

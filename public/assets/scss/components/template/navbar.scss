@@ -1,0 +1,11 @@
+.admin{
+    &__navbar{
+        &-component {
+        @apply w-full fixed top-0 left-0 h-full bg-[var(--color-surface-100)] shadow-md z-10;
+        @apply flex items-center justify-between px-9;
+        }
+        &--profile{
+        //    @apply 
+        }
+    }
+}
