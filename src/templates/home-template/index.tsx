@@ -4,7 +4,7 @@
 
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
-import React, { createContext, useContext, useMemo, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import { APP_ROUTER } from '@/common/config'
 import { jwtDecode } from 'jwt-decode'
@@ -59,13 +59,17 @@ function HomeTemplate({ children }: IHomeTemplate) {
 
 
 
+
 	const handleLogout = () => {
+		console.log(token, router);
 		if (token) {
 			Cookies.remove('token')
 			Cookies.remove('username')
 			Cookies.remove('id')
 		}
-		router.push(APP_ROUTER.paths.center.signIn.path)
+		window.location.href = '/sign-in'
+		// router.push('/sign-in')
+		// router.push('/sign-in');
 		return null
 	}
 
@@ -73,6 +77,7 @@ function HomeTemplate({ children }: IHomeTemplate) {
 		return { templateState, handleLogout }
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
 
 	if (token) {
 		const decoded = jwtDecode(token)
@@ -87,7 +92,6 @@ function HomeTemplate({ children }: IHomeTemplate) {
 	return (
 		<HomeTemplateContext.Provider value={value}>
 			<div className="admin__template">
-
 				<div className={`admin__body p-5`}>
 					<SideBar />
 					{children}

@@ -10,6 +10,7 @@ import { APP_ROUTER } from '@/common/config'
 import { jwtDecode } from 'jwt-decode'
 import AvatarComponent from '../../components/avatar'
 import SideBar from '../components/sidebar'
+import SideBarProfile from '../components/sidebar-profile'
 
 interface IProfileTemplate {
 	children: React.ReactNode
@@ -59,12 +60,13 @@ function ProfileTemplate({ children }: IProfileTemplate) {
 
 
 	const handleLogout = () => {
+		console.log(token, router);
 		if (token) {
 			Cookies.remove('token')
 			Cookies.remove('username')
 			Cookies.remove('id')
 		}
-		router.push(APP_ROUTER.paths.center.signIn.path)
+		window.location.href = '/sign-in'
 		return null
 	}
 
@@ -87,7 +89,7 @@ function ProfileTemplate({ children }: IProfileTemplate) {
 		<ProfileTemplateContext.Provider value={value}>
 			<div className="admin__template">
 				<div className={`admin__body p-5`}>
-					<SideBar />
+					<SideBarProfile />
 					<div className='mx-[120px] py-[10px]'>
 						{children}
 					</div>

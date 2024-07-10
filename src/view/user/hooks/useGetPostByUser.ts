@@ -12,7 +12,7 @@ export function useGetPostByUserId(_params: IUserRequest) {
 	const id=_params.id
 	return useQuery({
 		queryKey: ['useGetPostByUserId', id],
-		enabled: !!token,
+		enabled: !!token &&!!id, 
 		refetchOnWindowFocus: false,
 		queryFn: () => {
 			return PostService.getPostByUserId(id)

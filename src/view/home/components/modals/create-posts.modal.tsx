@@ -1,74 +1,130 @@
 import { Button, TextField } from "@mui/material";
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { useForm } from "react-hook-form";
 import { useState } from "react";
+import useCreatePost from "../../hooks/useCreatePost";
+import { IPostRequestDto } from "../../types/post.type";
+import { tokenDecode } from "@/common/token-decode/token-decode";
 
-interface FormData {
-	content: string;
-	files: FileList;
-}
-function CreatePostModal() {
-	console.log("");
-	const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
-	const [previews, setPreviews] = useState<string[]>([]);
-
-	const onSubmit = (data: FormData) => {
-		const files = Array.from(data.files);
-		if (files.every(file => file.type.startsWith('image/') || file.type.startsWith('video/'))) {
-			console.log({
-				content: data.content,
-				files: files
-			});
-			// Gửi dữ liệu tới API hoặc xử lý dữ liệu tại đây
-		} else {
-			alert('Please upload valid image or video files');
-		}
-	};
-
-	const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files;
-		if (files) {
-			const previewsArray = Array.from(files).map(file => URL.createObjectURL(file));
-			setPreviews(previewsArray);
-		}
-	};
-
-	const removePreview = (index: number) => {
-		setPreviews(previews.filter((_, i) => i !== index));
-	};
-	return (
-		<div className="flex flex-col gap-4 w-[500px] h-[500px] rounded">
-			<form onSubmit={handleSubmit(onSubmit)}>
-
-			<div className="flex items-center justify-between">
-				<div className="text-lg font-medium">Tạo bài viết</div>
-				<div className="material-symbols-outlined" style={{ fontSize: 26 }}>
-					close
-				</div>
-			</div>
-			<TextField
-				id="outlined-textarea"
-				placeholder="Hãy chia sẻ nhiều điều thú vị"
-				multiline
-				rows={4}
-			/>
-			<input type="file" accept="image/*,video/*"
-				{...field}
-				multiple
-				onChange={(e) => {
-					field.onChange(e);
-					handleFilesChange(e);
-				}}
-				style={{ display: 'none' }}
-				id="file-upload" />
-			<label htmlFor="file-upload">
-				<Button variant="contained" component="span" startIcon={<AddPhotoAlternateIcon />}>
-					Thêm ảnh/video
-				</Button>
-			</label>
-			</form>
-		</div>
-	)
+interface ModalProps {
+    show: boolean
+    onClose: () => void
+    onConfirm?: () => void
+    title: string
+    message: string
+    icon?: string
 }
 
-export default CreatePostModal
+const CreatePostModal: React.FC<ModalProps> = ({ show, icon, onClose, onConfirm, title, message }) => {
+    const { mutate, isSuccess } = useCreatePost()
+    const userId = tokenDecode();
+    const [postData, setPostData] = useState<IPostRequestDto>({
+        title: '',
+        files: null,
+        previews: [],
+        userId: Number(userId)
+    });
+
+    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPostData({
+            ...postData,
+            title: e.target.value
+        });
+    }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files) {
+            const previews = Array.from(files).map(file => URL.createObjectURL(file));
+            setPostData({
+                ...postData,
+                files: files,
+                previews: previews
+            });
+            
+        }
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        if (postData.files) {
+            for (let i = 0; i < postData.files.length; i++) {
+                formData.append('files', postData.files[i]);
+            }
+        }
+        // console.log(postData.files[0], postData.files[1]);
+        console.log(formData.getAll('files'));
+        formData.append('userId', postData.userId.toString());
+        formData.append('title', postData.title);
+
+        mutate(formData as any); // Chuyển đổi formData thành any để phù hợp với mutate
+        // Xử lý việc upload ảnh và các thông tin khác tại đây
+    };
+    if (isSuccess) {
+        onClose()
+    }
+    const getImageClass = (index: number, total: number) => {
+        if (total === 1) return "w-full h-auto";
+        if (total === 2) return "w-[50%] h-auto";
+        if (total === 3) {
+            if (index === 0) return "w-[50%] h-full";
+            return "w-[50%] h-[50%]";
+        }
+        if (total > 3) {
+            if (index === 0) return "w-[50%] h-full";
+            if (index < 3) return "w-[50%] h-[50%]";
+            return "w-[50%] h-[50%]"; // or "hidden" if you want to hide extra files
+        }
+        return "w-[50%] h-auto";
+    }
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-4 w-[500px] h-auto rounded mb-2">
+                <div className="flex items-center justify-between">
+                    <div className="text-lg font-medium">Tạo bài viết</div>
+                    <button onClick={onClose} className="material-symbols-outlined" style={{ fontSize: 26 }}>
+                        close
+                    </button>
+                </div>
+                <TextField
+                    className="w-full p-[4px]"
+                    id="outlined-textarea"
+                    placeholder="Hãy chia sẻ nhiều điều thú vị"
+                    multiline
+                    rows={4}
+                    onChange={handleTextChange}
+                />
+                <label htmlFor="file" className="flex items-center cursor-pointer">
+                    <div className="material-symbols-outlined">image</div>
+                    Thêm ảnh
+                </label>
+                <input
+                    type="file"
+                    id="file"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    multiple
+                    hidden
+                />
+                {/* <div className="flex flex-wrap rounded">
+                    {postData.previews.map((preview, index) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img key={index} src={preview} alt={`Preview ${index}`} className={`rounded px-[4px] ${getImageClass(index, postData.previews.length)}`} />
+                    ))}
+                </div> */}
+                <div className="flex flex-wrap border rounded overflow-hidden">
+                    {postData.previews.map((preview, index) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <div key={index} className={`${getImageClass(index, postData.previews.length)} relative pl-[2px] pr-[2px]`}>
+                            <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <Button type="submit" className="w-full" variant='contained'>Đăng</Button>
+        </form>
+    )
+}
+
+export default CreatePostModal;

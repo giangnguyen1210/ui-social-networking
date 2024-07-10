@@ -12,7 +12,7 @@ export function useGetFollowerByUser(_params: IUserRequest) {
 	const id=_params.id
 	return useQuery({
 		queryKey: ['useGetFollowerByUser', id],
-		enabled: !!token,
+		enabled: !!token &&!!id,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
 			return FollowerService.getFollower(id)
