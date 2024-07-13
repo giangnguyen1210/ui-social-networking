@@ -7,5 +7,9 @@ export const PostService: any = {
     getPostByUserId: async (_id: number) => {
 		const response: IBaseResponse = await httpClient.get(API_ROUTES.post.getPostsByUserId(_id))
 		return response
+	},
+	getPostById: async (_id: number) => {
+		const response: IBaseResponse = await httpClient.get(API_ROUTES.post.getPostsById(_id))
+		return response
 	}
 }

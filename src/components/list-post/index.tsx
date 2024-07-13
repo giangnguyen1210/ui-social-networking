@@ -6,7 +6,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { IUser, IUserRequest } from '@/view/user/types/user.type';
 import { useGetPostByFollowing } from '@/view/home/hooks/useGetPostByFollowing';
-import {  formatDateFromArray } from '@/utils/format-datetime';
+import { formatDateFromArray } from '@/utils/format-datetime';
+import Likes from '../likes';
+import Comments from '../comments';
+import ImageSlider from '../\bpost-images';
+import ProfileUsername from '../profile-username';
+import { useRouter } from 'next/navigation';
+import { tokenDecode } from '@/common/token-decode/token-decode';
+import { APP_ROUTER } from '@/common/config';
 
 interface IPost {
   id: string;
@@ -21,20 +28,29 @@ interface IListPost {
   followings: IUser;
 }
 
-export const ListPost: React.FC<IListPost> = ({  followings }) => {
-    const handleLikePost = (id: string) =>{
+export const ListPost: React.FC<IListPost> = ({ followings }) => {
+  const handleLikePost = (id: string) => {
 
+  }
+  const userRequest: IUserRequest = {
+    id: Number(followings?.id)
+  }
+  const userId = tokenDecode()
+  const { data: postsByUserId, isSuccess: isGetPostSuccess } = useGetPostByFollowing(userRequest);
+  const router = useRouter()
+  const gotoDetail = (_username: string) => {
+    if (followings?.id === Number(userId)) {
+      router.push(APP_ROUTER.paths.home.profile.path)
+    } else {
+      router.push(APP_ROUTER.paths.home.profile.children.view(_username))
     }
-    const userRequest: IUserRequest = {
-		id: Number(followings?.id)
-	  }
-	const { data: postsByUserId, isSuccess: isGetPostSuccess } = useGetPostByFollowing(userRequest);
-
+  }
   return (
     <div>
-       {postsByUserId?.data?.map((post: IPost) => (
+      {postsByUserId?.data?.map((post: IPost) => (
         <Card key={post.id} sx={{ marginTop: "20px" }}>
           <CardHeader
+          onClick={()=>gotoDetail(followings?.username)}
             avatar={
               <AvatarComponent width={40} height={40} avatarData={followings?.avatarData?.dataFile} />
             }
@@ -46,7 +62,8 @@ export const ListPost: React.FC<IListPost> = ({  followings }) => {
             title={followings?.username}
             subheader={formatDateFromArray(post.createdAt as any)}
           />
-          {post.filePost.map((photo) => (
+          <ImageSlider post={post} maxHeight={550} maxWidth={550} />
+          {/* {post.filePost.map((photo) => (
             <CardMedia
               key={photo.id}
               component="img"
@@ -54,19 +71,22 @@ export const ListPost: React.FC<IListPost> = ({  followings }) => {
               src={`data:image/png;base64, ${photo.dataFile}`}
               alt="post photo"
             />
-          ))}
+          ))} */}
           <CardContent>
             <Typography variant="body2" color="text.secondary">
               {post.title}
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton onClick={() => handleLikePost(post.id)} aria-label="add to favorites">
+            {/* <IconButton onClick={() => handleLikePost(post.id)} aria-label="add to favorites">
               <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
+            </IconButton> */}
+            <Likes postId={Number(post?.id)} />
+            <Comments postId={Number(post?.id)} />
+
+            {/* <IconButton aria-label="share">
               <ShareIcon />
-            </IconButton>
+            </IconButton> */}
           </CardActions>
         </Card>
       ))}

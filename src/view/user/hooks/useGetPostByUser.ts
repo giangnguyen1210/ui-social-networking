@@ -19,3 +19,15 @@ export function useGetPostByUserId(_params: IUserRequest) {
 		},
 	})
 }
+
+export function useGetPostById(id: number) {
+	const token = Cookies.get('token')
+	return useQuery({
+		queryKey: ['useGetPostById', id],
+		enabled: !!token && !!id, 
+		refetchOnWindowFocus: false,
+		queryFn: () => {
+			return PostService.getPostById(id)
+		},
+	})
+}

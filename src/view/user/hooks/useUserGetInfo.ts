@@ -1,15 +1,16 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Cookies from 'js-cookie'
 import { IAvatarRequest, IGetUserRequest, IUserRequest } from '../types/user.type'
-import { UserService } from '../service/user.service'
 import { IHttpResponseDto } from '@/http/types/http.response'
+import { IBaseResponse } from '@/view/auth/types/common.type'
+import { UserService } from '../service/user.service'
 
 
 export function useUserGetInfo(_params: IGetUserRequest) {
 	const token = Cookies.get('token')
 	return useQuery({
 		queryKey: ['useUserGetInfo', _params],
-		enabled: !!token,
+		enabled: !!token &&!!_params,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
 			return UserService.getInfo(_params)
@@ -18,10 +19,23 @@ export function useUserGetInfo(_params: IGetUserRequest) {
 }
 
 
+export function useUserGetInfoById(id: number) {
+	const token = Cookies.get('token')
+	return useQuery({
+		queryKey: ['useUserGetInfoById', id],
+		enabled: !!token && !!id,
+		refetchOnWindowFocus: false,
+		queryFn: () => {
+			return UserService.getInfoById(id)
+		},
+	})
+}
+
+
 export function useGetAvatar(_param: number) {
 	const token = Cookies.get('token')
 	return useQuery({
-		queryKey: ['useAuthRegister'],
+		queryKey: ['useGetAvatar'],
 		enabled: !!token,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
@@ -29,5 +43,22 @@ export function useGetAvatar(_param: number) {
 			return UserService.getAvatar(userRequest)
 			
 		}
+	})
+}
+
+
+export function useUpdateAvatar() {
+	return useMutation({
+		mutationKey: ['useUpdateAvatar'],
+		mutationFn: (_params: FormData) => {
+			return UserService.updateAvatar(_params)
+		},
+		onSuccess: (res: IHttpResponseDto<IBaseResponse>) => {
+			if (res.errorCode === "OK") {
+				
+			}
+			if (res.errorCode !== "OK") {
+			}
+		},
 	})
 }

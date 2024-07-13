@@ -39,7 +39,21 @@ function SideBarProfile() {
 							{bodyExpand ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left'}
 						</span>
 					</Button> */}
+					
 					{profileTemplateContext.templateState.sidebarData.sections.navigator.map((nav) => {
+						if (nav?.type === 'add') {
+							// console.log(adminTemplateContext.handleLogout)
+							return (
+								<Link style={{ width: '100%' }} href={nav.path} key={nav.key}>
+									<SidebarButton
+										key={nav.key}
+										innerItext={nav.innerText}
+										icon={nav.icon}
+										onClick={() => profileTemplateContext.handleClickOpenModal()}
+									/>
+								</Link>
+							)
+						}
 						return (
 							<Link style={{ width: '100%' }} href={nav.path} key={nav.key}>
 								<SidebarButton  innerItext={nav.innerText} icon={nav.icon} />

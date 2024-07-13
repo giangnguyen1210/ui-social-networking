@@ -11,6 +11,8 @@ import { jwtDecode } from 'jwt-decode'
 import AvatarComponent from '../../components/avatar'
 import SideBar from '../components/sidebar'
 import SideBarProfile from '../components/sidebar-profile'
+import CreatePostModal from '@/view/home/components/modals/create-posts.modal'
+import useAppModal from '@/components/modals/app-modal/store'
 
 interface IProfileTemplate {
 	children: React.ReactNode
@@ -23,7 +25,7 @@ const initData = {
 				{ innerText: 'Trang chủ', icon: 'home', path: '/home', key: 'nav_00' },
 				{ innerText: 'Tìm kiếm', icon: 'search', path: '', key: 'nav_01' },
 				{ innerText: 'Thông báo', icon: 'notifications', path: '', key: 'nav_02' },
-				{ innerText: 'Tạo bài viết', icon: 'add', path: '', key: 'nav_03' },
+				{ innerText: 'Tạo bài viết', icon: 'add', path: '', key: 'nav_03', type: 'add' },
 				{
 					innerText: 'Trang cá nhân', icon: <AvatarComponent width={24} height={24} avatarData={null}/>, path: '/profile', key: 'nav_04'
 				}
@@ -39,6 +41,7 @@ const initData = {
 const ProfileTemplateContext = createContext({
 	templateState: initData,
 	handleLogout: () => null,
+	handleClickOpenModal: () => null
 })
 
 const useProfileTemplateContext = () => {
@@ -58,9 +61,17 @@ function ProfileTemplate({ children }: IProfileTemplate) {
 	const [templateState, setTemplateState] = useState<typeof initData>(initData)
 
 
+	const { open, close, setModalOptions, isOpen } = useAppModal()
 
+	const handleClickOpenModal = () => {
+		setModalOptions({
+			showCloseIcon: false,
+			content: <CreatePostModal onClose={close} show={false} title={""} message={""} />,
+		})
+		open()
+		return null;
+	}
 	const handleLogout = () => {
-		console.log(token, router);
 		if (token) {
 			Cookies.remove('token')
 			Cookies.remove('username')
@@ -71,7 +82,7 @@ function ProfileTemplate({ children }: IProfileTemplate) {
 	}
 
 	const value = useMemo(() => {
-		return { templateState, handleLogout }
+		return { templateState, handleLogout, handleClickOpenModal }
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

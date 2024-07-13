@@ -39,7 +39,7 @@ function HomePageView() {
 			<div className="home__content">
 				{usersFollowing?.data?.map((user: IUser) => (
 					// eslint-disable-next-line react/jsx-key
-					<ListPost followings={user}/>
+					<ListPost key={user?.id} followings={user}/>
 				))}
 			</div>
 			<div className="home__footer">

@@ -5,3 +5,7 @@
 @import '../components/profile/index.scss';
 @import '../components/home/index.scss';
 @import '../components/modal/index.scss';
+
+.react-responsive-modal-modal {
+    padding: 0 !important;
+}

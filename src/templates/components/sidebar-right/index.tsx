@@ -3,7 +3,7 @@
 // import { ButtonComponent } from '@syncfusion/ej2-react-buttons'
 
 import Cookies from 'js-cookie'
-import { useGetAvatar, useUserGetInfo } from '@/view/user/hooks/useUserGetInfo'
+import {  useUserGetInfo } from '@/view/user/hooks/useUserGetInfo'
 import { IGetUserRequest, IUser } from '@/view/user/types/user.type'
 import { useEffect } from 'react'
 import { IBaseResponse } from '@/view/auth/types/common.type'

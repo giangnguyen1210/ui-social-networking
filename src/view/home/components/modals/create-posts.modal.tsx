@@ -14,7 +14,7 @@ interface ModalProps {
 }
 
 const CreatePostModal: React.FC<ModalProps> = ({ show, icon, onClose, onConfirm, title, message }) => {
-    const { mutate, isSuccess } = useCreatePost()
+    const { mutate: createPost, isSuccess } = useCreatePost()
     const userId = tokenDecode();
     const [postData, setPostData] = useState<IPostRequestDto>({
         title: '',
@@ -39,7 +39,7 @@ const CreatePostModal: React.FC<ModalProps> = ({ show, icon, onClose, onConfirm,
                 files: files,
                 previews: previews
             });
-            
+
         }
     };
 
@@ -53,18 +53,18 @@ const CreatePostModal: React.FC<ModalProps> = ({ show, icon, onClose, onConfirm,
             }
         }
         // console.log(postData.files[0], postData.files[1]);
-        console.log(formData.getAll('files'));
+        // console.log(formData.getAll('files'));
         formData.append('userId', postData.userId.toString());
         formData.append('title', postData.title);
 
-        mutate(formData as any); // Chuyển đổi formData thành any để phù hợp với mutate
+        createPost(formData as any); // Chuyển đổi formData thành any để phù hợp với mutate
         // Xử lý việc upload ảnh và các thông tin khác tại đây
     };
     if (isSuccess) {
         onClose()
     }
     const getImageClass = (index: number, total: number) => {
-        if (total === 1) return "w-full h-auto";
+        if (total === 1) return "w-full max-h-[520px]";
         if (total === 2) return "w-[50%] h-auto";
         if (total === 3) {
             if (index === 0) return "w-[50%] h-full";
@@ -75,54 +75,52 @@ const CreatePostModal: React.FC<ModalProps> = ({ show, icon, onClose, onConfirm,
             if (index < 3) return "w-[50%] h-[50%]";
             return "w-[50%] h-[50%]"; // or "hidden" if you want to hide extra files
         }
-        return "w-[50%] h-auto";
+        return "w-[50%] max-h-[600px]";
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-4 w-[500px] h-auto rounded mb-2">
+            <div className="flex flex-col gap-4 w-[500px] h-auto rounded mb-2 p-5">
                 <div className="flex items-center justify-between">
                     <div className="text-lg font-medium">Tạo bài viết</div>
                     <button onClick={onClose} className="material-symbols-outlined" style={{ fontSize: 26 }}>
                         close
                     </button>
                 </div>
-                <TextField
-                    className="w-full p-[4px]"
-                    id="outlined-textarea"
-                    placeholder="Hãy chia sẻ nhiều điều thú vị"
-                    multiline
-                    rows={4}
-                    onChange={handleTextChange}
-                />
-                <label htmlFor="file" className="flex items-center cursor-pointer">
-                    <div className="material-symbols-outlined">image</div>
-                    Thêm ảnh
-                </label>
-                <input
-                    type="file"
-                    id="file"
-                    onChange={handleFileChange}
-                    accept="image/*"
-                    multiple
-                    hidden
-                />
-                {/* <div className="flex flex-wrap rounded">
-                    {postData.previews.map((preview, index) => (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img key={index} src={preview} alt={`Preview ${index}`} className={`rounded px-[4px] ${getImageClass(index, postData.previews.length)}`} />
-                    ))}
-                </div> */}
-                <div className="flex flex-wrap border rounded overflow-hidden">
-                    {postData.previews.map((preview, index) => (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <div key={index} className={`${getImageClass(index, postData.previews.length)} relative pl-[2px] pr-[2px]`}>
-                            <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full" />
-                        </div>
-                    ))}
+                <div className="flex-1 max-h-[500px] overflow-y-auto">
+                    <TextField
+                        className="w-full p-[4px]"
+                        id="outlined-textarea"
+                        placeholder="Hãy chia sẻ nhiều điều thú vị"
+                        multiline
+                        rows={4}
+                        onChange={handleTextChange}
+                    />
+                    <label htmlFor="file" className="flex items-center cursor-pointer mt-2">
+                        <div className="material-symbols-outlined">image</div>
+                        Thêm ảnh
+                    </label>
+                    <input
+                        type="file"
+                        id="file"
+                        onChange={handleFileChange}
+                        accept="image/*"
+                        multiple
+                        hidden
+                    />
+                    <div className="flex flex-wrap border rounded overflow-hidden mt-2">
+                        {postData.previews.map((preview, index) => (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <div key={index} className={`${getImageClass(index, postData.previews.length)} relative pl-[2px] pr-[2px]`}>
+                                <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full" />
+                            </div>
+                        ))}
+                    </div>
                 </div>
+                <Button type="submit" className="w-full" variant='contained' disabled={!postData.files}>Đăng</Button>
             </div>
-            <Button type="submit" className="w-full" variant='contained'>Đăng</Button>
+
+            {/* <Button type="submit" className="w-full" variant='contained'>Đăng</Button> */}
         </form>
     )
 }

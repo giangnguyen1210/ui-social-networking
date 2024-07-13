@@ -36,7 +36,7 @@ export default function SendEmailVerifyForm() {
 	useEffect(() => {
 		if (loginData?.errorCode === "OK") {
 			methods.reset()
-			router.push(APP_ROUTER.paths.admin.dashboard.path)
+			router.push(APP_ROUTER.paths.home.home.path)
 		}
 	}, [isSuccess])
     

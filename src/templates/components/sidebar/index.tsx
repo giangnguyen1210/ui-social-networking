@@ -39,6 +39,18 @@ function SideBar() {
 						</span>
 					</Button> */}
 					{adminTemplateContext.templateState.sidebarData.sections.navigator.map((nav) => {
+						if (nav?.type === 'add') {
+							return (
+								<Link style={{ width: '100%' }}  href={nav.path} key={nav.key}>
+									<SidebarButton
+										key={nav.key}
+										innerItext={nav.innerText}
+										icon={nav.icon}
+										onClick={() => adminTemplateContext.handleClickOpenModal()}
+									/>
+								</Link>
+							)
+						}
 						return (
 							<Link style={{ width: '100%' }} href={nav.path} key={nav.key}>
 								<SidebarButton  innerItext={nav.innerText} icon={nav.icon} />
@@ -49,7 +61,6 @@ function SideBar() {
 
 				<section className="lex flex-col items-start justify-between gap-3">
 					{adminTemplateContext.templateState.sidebarData.sections.settings.map((nav) => {
-						// console.log(nav)
 						if (nav?.type === 'logout') {
 							// console.log(adminTemplateContext.handleLogout)
 							return (
@@ -63,6 +74,7 @@ function SideBar() {
 								</Link>
 							)
 						}
+						
 						return (
 							<Link href={nav.path} key={nav.key}>
 								<SidebarButton innerItext={nav.innerText} icon={nav.icon} />
