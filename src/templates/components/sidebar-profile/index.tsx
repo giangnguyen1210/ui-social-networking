@@ -41,6 +41,18 @@ function SideBarProfile() {
 					</Button> */}
 					
 					{profileTemplateContext.templateState.sidebarData.sections.navigator.map((nav) => {
+						if (nav?.type === 'search') {
+							return (
+								<Link style={{ width: '100%' }}  href={nav.path} key={nav.key}>
+									<SidebarButton
+										key={nav.key}
+										innerItext={nav.innerText}
+										icon={nav.icon}
+										onClick={() => profileTemplateContext.handleOpenSearchModal()}
+									/>
+								</Link>
+							)
+						}
 						if (nav?.type === 'add') {
 							// console.log(adminTemplateContext.handleLogout)
 							return (

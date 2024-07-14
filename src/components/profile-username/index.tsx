@@ -12,7 +12,6 @@ interface IProfileUsername{
     onClose: ()=> void;
 }
 const ProfileUsername: React.FC<IProfileUsername> = ({ onClose,userId }) => {
-// function ProfileUsername(userId: number) {
     const router = useRouter()
     const gotoDetail = (_username: string) => {
         if(userData?.id===Number(userId)){
@@ -27,13 +26,13 @@ const ProfileUsername: React.FC<IProfileUsername> = ({ onClose,userId }) => {
 
 //   console.log(userData);
     return (
-        <div onClick={() => gotoDetail(userData?.username)} className="flex items-center p-4 cursor-pointer w-3/5 ">
+        <div onClick={() => gotoDetail(userData?.username)} className="flex items-center p-4 cursor-pointer">
             <div className="">
-                <AvatarComponent width={40} height={40} avatarData={userData?.avatarData?.dataFile} />
+                <AvatarComponent width={40} height={40} avatarData={userData?.avatarData?.dataFile}/>
                 {/* {userData?.id && <AvatarComponent width={50} height={50} src={avatarSrc} userId={userData?.id} />} */}
             </div>
             <div className="pl-4">
-                <div className='text-sm'>{userData?.username}</div>
+                <div className='text-sm font-medium'>{userData?.username}</div>
             </div>
         </div>
 

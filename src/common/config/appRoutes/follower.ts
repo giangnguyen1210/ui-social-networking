@@ -1,6 +1,6 @@
 export const followerApiRoute = {
-	getUsersFollower: (_id: number) =>`/api/users/get-users-follower/${_id}`,
-	getUsersFollowing:(_id: number) =>`/api/users/get-users-following/${_id}`,
+	getUsersFollower: (_id: number, keyword: string) =>`/api/users/get-users-follower/${_id}?keyword=${keyword}`,
+	getUsersFollowing:(_id: number, keyword: string) =>`/api/users/get-users-following/${_id}?keyword=${keyword}`,
 	getUsersNotFollowing: (_id: number)=>`/api/users/get-users-not-following/${_id}`,
 	checkIsFollowing: (_id: number, _followingId: number) => `/api/users/check-is-following/${_id}/${_followingId}`,
 	postFollowUser: '/api/followers/create',

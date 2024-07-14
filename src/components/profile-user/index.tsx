@@ -5,20 +5,26 @@ import AvatarComponent from '../avatar'
 import { useRouter } from 'next/navigation'
 import { APP_ROUTER } from '@/common/config'
 import { tokenDecode } from '@/common/token-decode/token-decode'
+interface IProfileUser{
+    userData: IUser
+    onClose: () => void;
+}
 
-function ProfileUser({ userData }: { userData: IUser }) {
+const ProfileUser: React.FC<IProfileUser> = ({ userData, onClose }) =>{
     let userId = tokenDecode()
     const router = useRouter()
     const gotoDetail = (_username: string) => {
         if(userData?.id===Number(userId)){
             router.push(APP_ROUTER.paths.home.profile.path)
+            onClose();
         }else{
             router.push(APP_ROUTER.paths.home.profile.children.view(_username))
+            onClose();
         }
     }
    
     return (
-        <div onClick={() => gotoDetail(userData?.username)} className="flex items-center p-4 cursor-pointer w-3/5 ">
+        <div onClick={() => gotoDetail(userData?.username)} className="flex items-center p-4 cursor-pointer">
             <div className="">
                 <AvatarComponent width={50} height={50} avatarData={userData?.avatarData?.dataFile} />
                 {/* {userData?.id && <AvatarComponent width={50} height={50} src={avatarSrc} userId={userData?.id} />} */}

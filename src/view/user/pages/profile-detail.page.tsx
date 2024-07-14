@@ -1,11 +1,9 @@
 'use client';
 import AvatarComponent from '@/components/avatar'
 import React from 'react'
-import { IGetUserRequest, IUser } from '../types/user.type'
 import { useSearchParams } from 'next/navigation';
 import Cookies from 'js-cookie'
 import { useUserGetInfo } from '../hooks/useUserGetInfo';
-import ProfileUser from '@/components/profile-user';
 import ProfileDetailUser from '@/components/profile-user-detail';
 
 function ProfileDetailPage() {

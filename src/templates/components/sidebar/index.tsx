@@ -51,6 +51,18 @@ function SideBar() {
 								</Link>
 							)
 						}
+						if (nav?.type === 'search') {
+							return (
+								<Link style={{ width: '100%' }}  href={nav.path} key={nav.key}>
+									<SidebarButton
+										key={nav.key}
+										innerItext={nav.innerText}
+										icon={nav.icon}
+										onClick={() => adminTemplateContext.handleOpenSearchModal()}
+									/>
+								</Link>
+							)
+						}
 						return (
 							<Link style={{ width: '100%' }} href={nav.path} key={nav.key}>
 								<SidebarButton  innerItext={nav.innerText} icon={nav.icon} />

@@ -19,6 +19,7 @@ interface IAvatar {
 
 export interface IUserRequest {
     id: number
+    keyword?: string
 }
 
 export interface IAvatarRequest {
@@ -52,14 +53,18 @@ export interface IStatusLikeResponse{
     isLiked: boolean;
 }
 export interface ICommentRequest{
-    // private Long id;
-    // private Long postId;
-    // private Long userId;
-    // private Long parentId; // Field mới để lưu trữ ID của comment gốc (nếu có)
-    // private String content;
     id: number | null;
     userId: number;
     postId: number;
     content: string;
     parentId: number | null;
+}
+
+export interface IUpdateUserRequest{
+    id: number;
+    name: string;
+    bio: string;
+    username:string;
+    birthday: string;
+    gender: number;
 }

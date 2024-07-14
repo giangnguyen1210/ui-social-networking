@@ -4,16 +4,20 @@ import { IAvatarRequest, ICheckFollowingRequest, IFollowerRequest, IGetUserReque
 import { IBaseResponse } from '../../auth/types/common.type'
 import { AxiosResponse } from 'axios'
 export const FollowerService: any = {
-	getFollowing: async (_id: number) => {
-		const response: IBaseResponse = await httpClient.get(API_ROUTES.follower.getUsersFollowing(_id))
+	getFollowing: async (_params: IUserRequest) => {
+		const _id = _params.id
+		const keyword = _params.keyword as string || ''
+		const response: IBaseResponse = await httpClient.get(API_ROUTES.follower.getUsersFollowing(_id, keyword))
 		return response
 	},
-	getFollower: async (_id: number) => {
-		const response: IBaseResponse = await httpClient.get(API_ROUTES.follower.getUsersFollower(_id))
+	getFollower: async (_params: IUserRequest) => {
+		const _id = _params.id
+		const keyword = _params.keyword as string || ''
+		const response: IBaseResponse = await httpClient.get(API_ROUTES.follower.getUsersFollower(_id, keyword))
 		return response
 	},
-	getNotFollowing: async (_id: number) => {
-		const response: IBaseResponse = await httpClient.get(API_ROUTES.follower.getUsersNotFollowing(_id))
+	getNotFollowing: async (id: number) => {
+		const response: IBaseResponse = await httpClient.get(API_ROUTES.follower.getUsersNotFollowing(id))
 		return response
 	},
 	postFollow: async (_params: IFollowerRequest) => {

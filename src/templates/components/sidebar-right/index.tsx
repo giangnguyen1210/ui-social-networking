@@ -19,11 +19,14 @@ function SideBarRight() {
 	}
 	const { data: responseData } = useUserGetInfo(userRequest)
 	const userData: IUser = responseData?.data
+	const onClose = () =>{
+		
+	}
 	return (
 		<div className={`admin__sidebar-right-component`}>
 			<div className="admin__sidebar-right-body">
 				<section className="flex flex-col items-start justify-between gap-3">
-					<ProfileUser userData={userData} />
+					<ProfileUser onClose={onClose} userData={userData} />
 				</section>
 				<ListUserNotFollowing userData={userData}/>
 				

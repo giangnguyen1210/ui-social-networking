@@ -15,7 +15,7 @@ const ImageContainer = styled.div`
 
 const StyledImage = styled.img<{ maxWidth: number }>`
    width: 100%;
-  object-fit: cover; /* Đảm bảo hình ảnh được cắt và điều chỉnh để phù hợp */
+  object-fit: cover; 
 `;
 
 interface Post {

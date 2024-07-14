@@ -9,13 +9,13 @@ import { IBaseResponse } from '@/view/auth/types/common.type'
 
 export function useGetFollowerByUser(_params: IUserRequest) {
 	const token = Cookies.get('token')
-	const id=_params.id
+	const id= _params.id
 	return useQuery({
 		queryKey: ['useGetFollowerByUser', id],
-		enabled: !!token &&!!id,
+		enabled: !!token &&!!_params.id,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
-			return FollowerService.getFollower(id)
+			return FollowerService.getFollower(_params)
 		},
 	})
 }
@@ -25,17 +25,16 @@ export function useGetFollowingByUser(_params: IUserRequest) {
 	const id=_params.id
 	return useQuery({
 		queryKey: ['useGetFollowingByUser', id],
-		enabled: !!token && !!id,
+		enabled: !!token &&!!_params.id,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
-			return FollowerService.getFollowing(id)
+			return FollowerService.getFollowing(_params)
 		},
 	})
 }
 
-export function useGetNotFollowingByUser(_params: IUserRequest) {
+export function useGetNotFollowingByUser(id: number) {
 	const token = Cookies.get('token')
-	const id=_params.id
 	return useQuery({
 		queryKey: ['useGetNotFollowingByUser', id],
 		enabled: !!token && !!id,
@@ -47,8 +46,13 @@ export function useGetNotFollowingByUser(_params: IUserRequest) {
 }
 
 export function useCheckIsFollowing(_params: ICheckFollowingRequest){
+	const token = Cookies.get('token')
+	const followingId=_params.followingId
+	const id=_params.userId
 	return useQuery({
 		queryKey: ['useCheckIsFollowing'],
+		enabled: !!token && !!id && !!followingId,
+		refetchOnWindowFocus: false,
 		queryFn: () => {
 			return FollowerService.checkIsFollowing(_params)
 		}

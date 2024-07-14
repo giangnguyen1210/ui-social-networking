@@ -21,7 +21,7 @@ const ImageContainer = styled.div<ImageContainerProps>`
 const StyledImage = styled.img<{ maxWidth: number }>`
   width: 100%;
   min-height: 600px;
-  object-fit: cover; /* Đảm bảo hình ảnh được cắt và điều chỉnh để phù hợp */
+  object-fit: cover; 
 `;
 
 interface IPost {

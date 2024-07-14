@@ -166,7 +166,7 @@ const CommentContent: React.FC<ICommentContent> = ({
         <div className='flex flex-col' style={{ paddingLeft: `${level * 20}px` }}>
             <div className='flex items-center p-4'>
                 <div onClick={() => gotoDetail(userData?.username)} className='cursor-pointer'>
-                    <AvatarComponent width={40} height={40} avatarData={userData?.avatarData?.dataFile} />
+                    <AvatarComponent width={40} height={40} avatarData={userData?.avatarData?.dataFile} userId={userId}/>
                 </div>
                 <div className='flex flex-col'>
                     <div className='flex'>
