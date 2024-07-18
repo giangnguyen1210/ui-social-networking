@@ -26,9 +26,9 @@ const initData = {
 			navigator: [
 				{ innerText: 'Trang chủ', icon: 'home', path: '/home', key: 'nav_00' },
 				{ innerText: 'Tìm kiếm', icon: 'search', path: '', key: 'nav_01',type: 'search' },
-				{ innerText: 'Thông báo', icon: 'notifications', path: '', key: 'nav_02' },
+				// { innerText: 'Thông báo', icon: 'notifications', path: '', key: 'nav_02' },
 				{ innerText: 'Tạo bài viết', icon: 'add', path: '', key: 'nav_03', type: 'add' },
-				{ innerText: 'Tin nhắn', icon: 'chat', path: '/chat', key: 'nav_04', type: 'chat' },
+				// { innerText: 'Tin nhắn', icon: 'chat', path: '/chat', key: 'nav_04', type: 'chat' },
 				{
 					innerText: 'Trang cá nhân', icon: <AvatarComponent width={24} height={24} avatarData={null}/>, path: '/profile', key: 'nav_05'
 				}

@@ -9,11 +9,12 @@ import { useGetPostByFollowing } from '@/view/home/hooks/useGetPostByFollowing';
 import { formatDateFromArray } from '@/utils/format-datetime';
 import Likes from '../likes';
 import Comments from '../comments';
-import ImageSlider from '../\bpost-images';
+import ImageSlider from '../post-images';
 import ProfileUsername from '../profile-username';
 import { useRouter } from 'next/navigation';
 import { tokenDecode } from '@/common/token-decode/token-decode';
 import { APP_ROUTER } from '@/common/config';
+import { useGetPostByUserId } from '@/view/user/hooks/useGetPostByUser';
 
 interface IPost {
   id: string;
@@ -32,11 +33,17 @@ export const ListPost: React.FC<IListPost> = ({ followings }) => {
   const handleLikePost = (id: string) => {
 
   }
+  const userId = tokenDecode()
+
   const userRequest: IUserRequest = {
     id: Number(followings?.id)
   }
-  const userId = tokenDecode()
+  const userCurrentRequest: IUserRequest = {
+    id: Number(userId)
+  }
   const { data: postsByUserId, isSuccess: isGetPostSuccess } = useGetPostByFollowing(userRequest);
+  const { data: post, isSuccess: isGetPost } = useGetPostByUserId(userCurrentRequest);
+
   const router = useRouter()
   const gotoDetail = (_username: string) => {
     if (followings?.id === Number(userId)) {
@@ -63,30 +70,14 @@ export const ListPost: React.FC<IListPost> = ({ followings }) => {
             subheader={formatDateFromArray(post.createdAt as any)}
           />
           <ImageSlider post={post} maxHeight={550} maxWidth={550} />
-          {/* {post.filePost.map((photo) => (
-            <CardMedia
-              key={photo.id}
-              component="img"
-              width="200"
-              src={`data:image/png;base64, ${photo.dataFile}`}
-              alt="post photo"
-            />
-          ))} */}
           <CardContent>
             <Typography variant="body2" color="text.secondary">
               {post.title}
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            {/* <IconButton onClick={() => handleLikePost(post.id)} aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton> */}
             <Likes postId={Number(post?.id)} />
             <Comments postId={Number(post?.id)} />
-
-            {/* <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton> */}
           </CardActions>
         </Card>
       ))}

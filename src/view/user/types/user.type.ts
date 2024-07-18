@@ -68,3 +68,8 @@ export interface IUpdateUserRequest{
     birthday: string;
     gender: number;
 }
+
+export interface IGetChatMessagesRequest{
+    senderId: string;
+    receiverId: string; 
+}

@@ -1,32 +1,21 @@
 import { API_ROUTES } from '@/common/config'
 import { httpClient } from '@/http'
-import { IChatMessage, IChatNotification, IGetChatMessagesRequest, ISendMessageRequest } from '../types/chat.type'
 import { IBaseResponse } from '../../auth/types/common.type'
 import { AxiosResponse } from 'axios'
+import { IGetChatMessagesRequest } from '../types/user.type'
+import axios from 'axios';
 
+const API_URL = 'http://localhost:8086/api/chatrooms';
 export const ChatService: any = {
   // Lấy tin nhắn giữa hai người dùng
   getMessages: async (_params: IGetChatMessagesRequest) => {
-    const { senderId, recipientId } = _params
-    const response: IBaseResponse = await httpClient.get(`${API_ROUTES.chat.getMessages}/${senderId}/${recipientId}`)
+    const { senderId, receiverId } = _params
+    const response: IBaseResponse = await httpClient.get(`${API_ROUTES.chat.getMessage}/${senderId}/${receiverId}`)
     return response
   },
-
-  // Gửi tin nhắn
-  sendMessage: async (_params: ISendMessageRequest) => {
-    const response: AxiosResponse<IBaseResponse, any> = await httpClient.post(API_ROUTES.chat.sendMessage, _params)
-    return response
-  },
-
-  // Lấy thông báo tin nhắn
-  getChatNotification: async (userId: number) => {
-    const response: IBaseResponse = await httpClient.get(`${API_ROUTES.chat.getChatNotification}/${userId}`)
-    return response
-  },
-  
-  // Xử lý đọc tin nhắn
-  readMessage: async (messageId: number) => {
-    const response: IBaseResponse = await httpClient.post(`${API_ROUTES.chat.readMessage}/${messageId}`)
-    return response
-  }
 }
+
+export const createChatRoom = async (senderId: string, recipientId: string) => {
+    const response = await axios.post(`${API_URL}?senderId=${senderId}&recipientId=${recipientId}`);
+    return response.data;
+};

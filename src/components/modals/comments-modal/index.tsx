@@ -7,7 +7,7 @@ import { ICommentRequest } from "@/view/user/types/user.type";
 import CommentContent from "@/components/comments/comment-content";
 import { useGetPostById } from "@/view/user/hooks/useGetPostByUser";
 import Likes from "@/components/likes";
-import ImageSlider from '@/components/\bpost-images';
+import ImageSlider from '@/components/post-images';
 
 interface ModalProps {
     postId: number;

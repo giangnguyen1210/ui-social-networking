@@ -1,9 +1,10 @@
 export const formatDateFromArray = (dateArray: number[]) => {
     const [year, month, day, hour, minute, second, millisecond] = dateArray;
     
+    console.log(year, month, day);
     // Create a new Date object using the array elements
-    const date = new Date(year, month - 1, day, hour, minute, second, millisecond);
-    
+    const date = new Date(year, month-1, day, hour, minute, second, millisecond);
+    console.log(date);
     // Calculate the difference in milliseconds between now and the provided date
     const now = new Date();
     const diffInMilliseconds = now.getTime() - date.getTime();
