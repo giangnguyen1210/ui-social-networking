@@ -1,0 +1,38 @@
+.admin {
+  &__sidebar {
+    &-component {
+      @apply h-full w-[236px] bg-[var(--color-surface-100)];
+      @apply fixed top-0 left-0 z-0;
+
+      // box-shadow: 5px 3px 6px 0px rgba(0, 0, 0, 0.1);
+      border-right: #ccc 0.1px solid;
+
+      transition: 0.3s;
+      &--close {
+        width: 55px;
+        transition: 0.3s;
+      }
+      
+    }
+    &-body {
+      @apply size-full py-6 flex flex-col justify-between;
+      a {
+        color: black;
+      }
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .admin {
+    &__sidebar {
+      &-component {
+        @apply absolute top-0 left-[0] w-[236px];
+        &--close {
+          @apply -left-[240px];
+          transition: 0.3s;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+:root {
+	--header-high: 50px;
+}
+
+.admin{
+    &__template {
+        @apply h-[screen] w-full bg-[var(--color-surface-100)];
+    }
+    &__body {
+        @apply relative ml-[236px] top-0 h-[200vh];
+    
+        transition: 0.3s;
+        &--close {
+            @apply ml-[55px];
+            transition: 0.3s;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+	.admin{
+        &__body {
+            @apply ml-0;
+        }
+    }
+}
+
+@import './navbar.scss';
+@import './sidebar.scss';
+@import './sidebar-right.scss';

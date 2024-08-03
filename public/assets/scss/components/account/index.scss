@@ -1,0 +1,11 @@
+.account{
+    &__section{
+        @apply py-1 p-2 font-medium text-gray-700 dark:text-gray-400;
+        &--button{
+            @apply block px-4 py-2 hover:bg-gray-100;
+        }
+        &--signout{
+            @apply block px-4 py-2 text-red-700 hover:bg-gray-100;
+        }
+    }
+}
