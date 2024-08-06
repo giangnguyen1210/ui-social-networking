@@ -8,9 +8,10 @@ import { tokenDecode } from '@/common/token-decode/token-decode'
 interface IProfileUser{
     userData: IUser
     onClose: () => void;
+    onHistoryClick?: (userData: IUser) => void;
 }
 
-const ProfileUser: React.FC<IProfileUser> = ({ userData, onClose }) =>{
+const ProfileUser: React.FC<IProfileUser> = ({ onHistoryClick,userData, onClose }) =>{
     let userId = tokenDecode()
     const router = useRouter()
     const gotoDetail = (_username: string) => {
@@ -21,6 +22,7 @@ const ProfileUser: React.FC<IProfileUser> = ({ userData, onClose }) =>{
             router.push(APP_ROUTER.paths.home.profile.children.view(_username))
             onClose();
         }
+        onHistoryClick && onHistoryClick(userData);
     }
    
     return (

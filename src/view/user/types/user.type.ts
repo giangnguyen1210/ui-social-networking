@@ -22,6 +22,11 @@ export interface IUserRequest {
     keyword?: string
 }
 
+export interface IUserSearch{
+    id: number
+    clickUserId: number
+}
+
 export interface IAvatarRequest {
     id: number
 }

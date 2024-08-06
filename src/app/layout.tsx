@@ -26,27 +26,19 @@ export default function RootLayout(props: { children: React.ReactNode; params: {
 
 	const router = useRouter();
 
-	useEffect(() => {
-		const token = Cookies.get('token');
-		if (token) {
-			const decoded = jwtDecode(token);
-			const currentTime = Date.now() / 1000;
-			const expire = decoded?.exp as number;
-			if (expire < currentTime) {
-				router.push(APP_ROUTER.paths.home.home.path);
-			}
-			//  else {
-			// 	Cookies.remove('token')
-			// 	Cookies.remove('username')
-			// 	Cookies.remove('id')
-			// 	// router.push(APP_ROUTER.paths.center.signIn.path);
-			// 	// console.log(expire, currentTime);
-
-			// }
-		} else {
-			router.push(APP_ROUTER.paths.center.signIn.path);
-		}
-	}, [router]);
+	// useEffect(() => {
+	// 	const token = Cookies.get('token');
+	// 	if (token) {
+	// 		const decoded = jwtDecode(token);
+	// 		const currentTime = Date.now() / 1000;
+	// 		const expire = decoded?.exp as number;
+	// 		if (expire < currentTime) {
+	// 			router.push(APP_ROUTER.paths.home.home.path);
+	// 		}
+	// 	} else {
+	// 		router.push(APP_ROUTER.paths.center.signIn.path);
+	// 	}
+	// }, [router]);
 
 	// if (token) {
 	// 	const decoded = jwtDecode(token)

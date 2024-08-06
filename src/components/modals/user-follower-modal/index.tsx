@@ -14,7 +14,8 @@ interface ModalProps {
 }
 
 const UserFollowerModal: React.FC<ModalProps> = ({ userId, show, onClose }) => {
-    const [keyword, setKeyword] = useState('')
+    const [keyword, setKeyword] = useState('');
+    const [loading, setLoading] = useState(false);
     const userRequest: IUserRequest = {
         id: Number(userId),
         keyword: keyword
@@ -41,8 +42,13 @@ const UserFollowerModal: React.FC<ModalProps> = ({ userId, show, onClose }) => {
     };
 
     const handleGetFollowingAfterSearch = () => {
-        usersFollowerRefetch();
-    }
+        if (keyword !== '') {
+            setLoading(true);
+            setTimeout(() => {
+                usersFollowerRefetch().finally(() => setLoading(false));
+            }, 500);
+        }
+    };
 
     return (
         <section className="flex flex-col min-w-[400px] min-h-[500px] max-h-[500px] p-5">
@@ -71,13 +77,19 @@ const UserFollowerModal: React.FC<ModalProps> = ({ userId, show, onClose }) => {
             />
 
             <div className="overflow-y-auto mt-3" style={{ maxHeight: 'calc(100vh - 200px)' }}>
-                {usersFollowerSucess && usersFollower?.data?.map((userData: IUser) => (
-                    <div key={userData.id} className='flex w-full'>
-                        <div className='w-4/5'>
-                            <ProfileUser onClose={onClose} userData={userData} />
-                        </div>
+                {loading ? (
+                    <div className="flex justify-center items-center h-full">
+                        <CircularProgress />
                     </div>
-                ))}
+                ) : (
+                    usersFollowerSucess && usersFollower?.data?.map((userData: IUser) => (
+                        <div key={userData.id} className='flex w-full'>
+                            <div className='w-4/5'>
+                                <ProfileUser onClose={onClose} userData={userData} />
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </section>
     );

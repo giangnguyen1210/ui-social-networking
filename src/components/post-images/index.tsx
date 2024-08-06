@@ -45,6 +45,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ post, maxHeight, maxWidth }) 
   useEffect(() => {
     if (post?.filePost) {
       let minImageHeight = Number.MAX_VALUE;
+      console.log(post?.filePost);
+      // console.log(post.);
       post.filePost.forEach((photo) => {
         const img = new Image();
         img.src = `data:image/png;base64, ${photo.dataFile}`;

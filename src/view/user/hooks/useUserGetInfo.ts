@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Cookies from 'js-cookie'
-import { IAvatarRequest, IGetUserRequest, IUpdateUserRequest, IUserRequest } from '../types/user.type'
+import { IAvatarRequest, IGetUserRequest, IUpdateUserRequest, IUserRequest, IUserSearch } from '../types/user.type'
 import { IHttpResponseDto } from '@/http/types/http.response'
 import { IBaseResponse } from '@/view/auth/types/common.type'
 import { UserService } from '../service/user.service'
@@ -59,6 +59,28 @@ export function useGetUserByKeyword(_params: IUserRequest){
 	})
 }
 
+export function useGetHistorySearch(userId: number){
+	const token = Cookies.get('token')
+	return useQuery({
+		queryKey: ['useGetHistorySearch', userId],
+		enabled: !!token &&!!userId,
+		refetchOnWindowFocus: false,
+		queryFn: () => {
+			return UserService.getHistorySearch(userId)
+		},
+	})
+}
+
+
+
+export function useSaveHistorySearch() {
+	return useMutation({
+		mutationKey: ['useSaveHistorySearch'],
+		mutationFn: (params: IUserSearch) => {
+			return UserService.saveHistorySearch(params)
+		}
+	})
+}
 
 export function useUpdateAvatar() {
 	return useMutation({

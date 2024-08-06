@@ -1,6 +1,6 @@
 import { API_ROUTES } from '@/common/config'
 import { httpClient } from '@/http'
-import { IGetUserRequest, IUpdateUserRequest, IUserRequest } from '../types/user.type'
+import { IGetUserRequest, IUpdateUserRequest, IUserRequest, IUserSearch } from '../types/user.type'
 import { IBaseResponse } from '../../auth/types/common.type'
 import { AxiosResponse } from 'axios'
 export const UserService: any = {
@@ -37,11 +37,22 @@ export const UserService: any = {
 		const response: IBaseResponse = await httpClient.get(API_ROUTES.user.getUsersByKeyword(_id, keyword))
 		return response
 	},
+	getHistorySearch: async (userId: number) => {
+		const response: IBaseResponse = await httpClient.get(API_ROUTES.user.getHistorySearch(userId))
+		return response
+	},
+	saveHistorySearch: async (params: IUserSearch) => {
+		const response: IBaseResponse = await httpClient.post(API_ROUTES.user.saveHistorySearch(
+			params.id,
+			params.clickUserId
+		))
+		return response
+	},
 	getListGender: async () => {
 		const response: IBaseResponse = await httpClient.get(API_ROUTES.user.getListGender)
 		return response
 	},
-	updateUserInfo: async (_params: IUpdateUserRequest)=>{
+	updateUserInfo: async (_params: IUpdateUserRequest) => {
 		const response: AxiosResponse<IBaseResponse, any> = await httpClient.post(API_ROUTES.user.updateUser, {
 			bio: _params.bio,
 			name: _params.name,
@@ -52,5 +63,5 @@ export const UserService: any = {
 
 		return response
 	},
-	
+
 }

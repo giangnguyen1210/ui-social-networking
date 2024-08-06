@@ -107,10 +107,10 @@ const CommentListModal: React.FC<ModalProps> = ({ postId, show, onClose }) => {
                 <Divider className="w-full" />
                 {postById?.data?.title !=='' &&
                     <div className='flex'>
-                        <div className=' w-2/5 '>
+                        <div className=''>
                             <ProfileUsername onClose={onClose} userId={Number(postById?.data?.userId)} />
                         </div>
-                        <div className='w-3/5 flex items-center text-sm'>
+                        <div className='w-full flex items-center text-sm'>
                             {postById?.data?.title}
                         </div>
                     </div>

@@ -23,6 +23,7 @@ const AvatarChangeModal: React.FC<ModalProps> = ({ show, onClose }) => {
             updateAvatar(formData, {
                 onSuccess: () => {
                     onClose()
+                    window.location.href = '/profile'
                 }
             });
         }
