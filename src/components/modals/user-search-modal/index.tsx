@@ -95,7 +95,7 @@ import { tokenDecode } from "@/common/token-decode/token-decode";
 import { IUser, IUserRequest, IUserSearch } from "@/view/user/types/user.type";
 import ProfileUser from '@/components/profile-user';
 import SearchIcon from '@mui/icons-material/Search';
-import { useGetUserByKeyword, useGetHistorySearch, useSaveHistorySearch } from '@/view/user/hooks/useUserGetInfo';
+import { useGetUserByKeyword, useGetHistorySearch, useSaveHistorySearch, useDeleteHistorySearch } from '@/view/user/hooks/useUserGetInfo';
 import ClickHistoryList from './ClickHistoryList';
 
 interface ModalProps {
@@ -117,6 +117,7 @@ const UserSearchModal: React.FC<ModalProps> = ({ userId, show, onClose }) => {
     const { data: usersGetByKeyword, isSuccess: isusersGetByKeywordSuccess, refetch: usersGetByKeywordRefetch } = useGetUserByKeyword(userRequest);
     const { data: clickHistory, isLoading: isClickHistoryLoading, refetch: refetchClickHistory } = useGetHistorySearch(Number(currentUserId));
     const { mutate: saveHistory} = useSaveHistorySearch();
+    const { mutate: deleteHistorySearch, isSuccess } = useDeleteHistorySearch();
 
     useEffect(() => {
         if (show) {
@@ -140,6 +141,20 @@ const UserSearchModal: React.FC<ModalProps> = ({ userId, show, onClose }) => {
             clickUserId: userData.id
         }
         saveHistory(param);
+    };
+    const handleDeleteHistory = (userId: string) => {
+        // Implement delete history logic here
+        deleteHistorySearch(Number(userId), {
+            onSuccess: () => {
+                refetchClickHistory();
+                console.log(`Deleted history for user: ${userId}`);
+                // Perform any additional actions on success, like refetching data or showing a success message
+            },
+            onError: (error) => {
+                console.error('Error deleting history:', error);
+                // Handle the error, like showing an error message
+            }
+        });
     };
 
 
@@ -188,6 +203,7 @@ const UserSearchModal: React.FC<ModalProps> = ({ userId, show, onClose }) => {
                             userId={currentUserId}
                             loading={isClickHistoryLoading}
                             clickHistory={clickHistory?.data || []}
+                            onClickDeleteHistory={handleDeleteHistory}
                             onClose={onClose}
                         />
                     )

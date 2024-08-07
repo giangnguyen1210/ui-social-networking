@@ -20,7 +20,7 @@ interface IPost {
   id: string;
   createdAt: string;
   title: string;
-  filePost: { id: string; dataFile: string }[];
+  filePost: { id: string; dataFile: string; mimeType: string }[];
 }
 
 interface IListPost {

@@ -21,6 +21,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ILoginRequestDto, IRegisterRequestDto } from '../../types';
 import { APP_ROUTER } from '@/common/config';
 import useAuthRegister from '../../hooks/useAuthRegister';
+import Image from 'next/image';
+import InstagramSVG from '@/components/svgComps/InstagramSVG';
 
 type SignUpFormFields = z.infer<typeof SignUpFormValidation>
 
@@ -43,34 +45,79 @@ export default function SignUpForm() {
 
 	return (
 		<Grid container component="main" sx={{ height: '100vh' }}>
-			<CssBaseline />
-			<Grid
-				item
-				xs={false}
-				sm={4}
-				md={7}
-				sx={{
-					backgroundImage: 'url(background-login.png)',
-					backgroundRepeat: 'no-repeat',
-					backgroundColor: (t) =>
-						t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-				}}
-			/>
-			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-				<Box
-					sx={{
-						my: 8,
-						mx: 4,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-					}}
-				>
-					<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-						<LockOutlinedIcon />
-					</Avatar>
+      <CssBaseline />
+      <Grid
+        item
+        xs={false}
+        sm={6}
+        md={7}
+        sx={{
+          position: 'relative',
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'flex',
+        }}
+      >
+        <Box sx={{ position: 'relative', height: '90%', width: '90%' }}>
+          <Image
+            src="/loginFrame.png"
+            alt="Phones"
+            layout="fill"
+            objectFit="contain"
+          />
+          <div className="absolute top-[26px] right-14 h-full w-full">
+              <div className="relative ">
+                <div className="absolute top-0 right-[-118px] h-[690px] w-full animate-loginImage1 opacity-0">
+                  <Image
+                    priority
+                    src="/loginImg1.png"
+                    alt="instagram"
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+                <div className="absolute top-0 right-[-118px] h-[690px] w-full animate-loginImage2 opacity-0">
+                  <Image
+                    src="/loginImg2.png"
+                    alt="instagram"
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+                <div className="absolute top-0 right-[-118px] h-[690px] w-full animate-loginImage3 opacity-0">
+                  <Image
+                    src="/loginImg3.png"
+                    alt="instagram"
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+
+                <div className="absolute top-0 right-[-118px] h-[690px] w-full animate-loginImage4 opacity-0">
+                  <Image
+                    src="/loginImg4.png"
+                    alt="instagram"
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+              </div>
+            </div>
+        </Box>
+      </Grid>
+      <Grid item xs={12} sm={6} md={5} component={Paper} elevation={6} square>
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div className="h-auto w-[175px] py-10">
+              <InstagramSVG disableDarkMode white={false} />
+            </div>
 					<Typography component="h1" variant="h5">
 						Register
 					</Typography>

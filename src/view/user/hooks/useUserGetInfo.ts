@@ -82,6 +82,13 @@ export function useSaveHistorySearch() {
 	})
 }
 
+export function useDeleteHistorySearch() {
+	return useMutation({
+	  mutationKey: ['useDeleteHistorySearch'],
+	  mutationFn: (userId: number) => UserService.deleteHistorySearch(userId),
+	});
+  }
+
 export function useUpdateAvatar() {
 	return useMutation({
 		mutationKey: ['useUpdateAvatar'],

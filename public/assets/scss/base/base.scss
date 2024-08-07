@@ -9,3 +9,29 @@
 .react-responsive-modal-modal {
     padding: 0 !important;
 }
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+  }
+  
+  .animate-loginImage1 {
+    animation: fadeInOut 20s infinite;
+    animation-delay: 0s;
+  }
+  
+  .animate-loginImage2 {
+    animation: fadeInOut 20s infinite;
+    animation-delay: 5s;
+  }
+  
+  .animate-loginImage3 {
+    animation: fadeInOut 20s infinite;
+    animation-delay: 10s;
+  }
+  
+  .animate-loginImage4 {
+    animation: fadeInOut 20s infinite;
+    animation-delay: 15s;
+  }
+  

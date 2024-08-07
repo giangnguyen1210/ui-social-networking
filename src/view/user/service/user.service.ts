@@ -48,6 +48,12 @@ export const UserService: any = {
 		))
 		return response
 	},
+	deleteHistorySearch: async (userId: number) => {
+		const response: IBaseResponse = await httpClient.delete(API_ROUTES.user.deleteHistorySearch(
+			userId
+		))
+		return response
+	},
 	getListGender: async () => {
 		const response: IBaseResponse = await httpClient.get(API_ROUTES.user.getListGender)
 		return response

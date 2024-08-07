@@ -4,7 +4,7 @@ const phoneRegex = /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
 
 export const LoginFormValidation = z.object({
 	username: z.string({ message: 'This field is require' }).min(5, 'Password must be at least 5 characters long'),
-	password: z.string({ message: 'This field is required' }).min(8, 'Password must be at least 8 characters long'),
+	password: z.string({ message: 'This field is required' }).min(5, 'Password must be at least 8 characters long'),
 	remember: z.boolean(),
 })
 

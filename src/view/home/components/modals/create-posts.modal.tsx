@@ -206,7 +206,7 @@ const CreatePostModal: React.FC<ModalProps> = ({ show, icon, onClose, onConfirm,
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form>
             <div className="flex flex-col gap-4 w-[500px] h-auto rounded mb-2 p-5">
                 <div className="flex items-center justify-between">
                     <div className="text-lg font-medium">Tạo bài viết</div>
@@ -248,7 +248,7 @@ const CreatePostModal: React.FC<ModalProps> = ({ show, icon, onClose, onConfirm,
                         ))}
                     </div>
                 </div>
-                <Button type="submit" className="w-full" variant='contained' disabled={!postData.files}>Đăng</Button>
+                <Button onClick={handleSubmit} type="submit" className="w-full" variant='contained' disabled={!postData.files}>Đăng</Button>
             </div>
         </form>
     )

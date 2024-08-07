@@ -7,6 +7,7 @@ import { useHomeTemplateContext } from '@/templates/home-template'
 import { Button } from '@mui/material'
 import Image from 'next/image'
 import SidebarButton from '../sidebar-button'
+import InstagramSVG from '@/components/svgComps/InstagramSVG'
 
 
 function SideBar() {
@@ -19,13 +20,16 @@ function SideBar() {
 
 
 				<section className="flex flex-col items-start justify-between gap-3">
-					<Image
+					{/* <Image
 						src="/assets/layout/imgs/header_logo.svg"
 						alt="header_logo"
 						width={10}
 						height={10}
 						className="size-auto pl-4 mb-8"
-					/>
+					/> */}
+					<div className="ml-6 w-[100px] py-10">
+						<InstagramSVG disableDarkMode white={false} />
+					</div>
 					{/* <Button variant="outlined"
 						onClick={handleToggleSidebar}
 						className="e-flat !flex h-[33px] w-[35px] !border-[var(--color-primary)] !p-0"
@@ -41,7 +45,7 @@ function SideBar() {
 					{adminTemplateContext.templateState.sidebarData.sections.navigator.map((nav) => {
 						if (nav?.type === 'add') {
 							return (
-								<Link style={{ width: '100%' }}  href={nav.path} key={nav.key}>
+								<Link style={{ width: '100%' }} href={nav.path} key={nav.key}>
 									<SidebarButton
 										key={nav.key}
 										innerItext={nav.innerText}
@@ -53,7 +57,7 @@ function SideBar() {
 						}
 						if (nav?.type === 'search') {
 							return (
-								<Link style={{ width: '100%' }}  href={nav.path} key={nav.key}>
+								<Link style={{ width: '100%' }} href={nav.path} key={nav.key}>
 									<SidebarButton
 										key={nav.key}
 										innerItext={nav.innerText}
@@ -65,7 +69,7 @@ function SideBar() {
 						}
 						return (
 							<Link style={{ width: '100%' }} href={nav.path} key={nav.key}>
-								<SidebarButton  innerItext={nav.innerText} icon={nav.icon} />
+								<SidebarButton innerItext={nav.innerText} icon={nav.icon} />
 							</Link>
 						)
 					})}
@@ -86,7 +90,7 @@ function SideBar() {
 								</Link>
 							)
 						}
-						
+
 						return (
 							<Link href={nav.path} key={nav.key}>
 								<SidebarButton innerItext={nav.innerText} icon={nav.icon} />
