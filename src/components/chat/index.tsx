@@ -250,7 +250,6 @@ const ChatRoom: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log(userData);
   }, [userData]);
 
   const connect = () => {
@@ -323,7 +322,6 @@ const ChatRoom: React.FC = () => {
         message: userData.message,
         status: 'MESSAGE'
       };
-      console.log(chatMessage);
       stompClient.send('/app/message', {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, message: '' });
     }

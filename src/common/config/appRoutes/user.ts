@@ -7,6 +7,7 @@ export const userApiRoute = {
     getHistorySearch: (_id:number) => `/api/users/search-users/users-from-history/${_id}`,
     saveHistorySearch: (id: number, clickUserId: number) => `/api/users/search-users/history?userId=${id}&clickedUserId=${clickUserId}`,
     deleteHistorySearch: (id: number) => `/api/users/search-users/delete-history/${id}`,
+    deleteHistorySearchClickedUser: (id: number, clickUserId: number) => `/api/users/search-users/delete-history/${id}/${clickUserId}`,
     getListGender: `/api/users/list-gender`,
     updateUser: `/api/users/update-info`
 };

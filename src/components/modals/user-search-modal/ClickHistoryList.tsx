@@ -2,17 +2,17 @@ import React from 'react';
 import { CircularProgress } from "@mui/material";
 import ProfileUser from '@/components/profile-user';
 import { IUser } from '@/view/user/types/user.type';
-import { useDeleteHistorySearch } from '@/view/user/hooks/useUserGetInfo';
-
+import CloseIcon from '@mui/icons-material/Close';
 interface ClickHistoryListProps {
     userId: string;
     loading: boolean;
     clickHistory: IUser[];
     onClose: () => void;
-    onClickDeleteHistory: (userId: string) => void; 
+    onClickDeleteHistory: (userId: string) => void;
+    onDeleteHistoryClickedUser: (userId: string, clickUserId: number) => void;
 }
 
-const ClickHistoryList: React.FC<ClickHistoryListProps> = ({onClickDeleteHistory, userId, loading, clickHistory, onClose }) => {
+const ClickHistoryList: React.FC<ClickHistoryListProps> = ({ onDeleteHistoryClickedUser, onClickDeleteHistory, userId, loading, clickHistory, onClose }) => {
 
     return (
         <div className="overflow-y-auto mt-3" style={{ maxHeight: 'calc(100vh - 200px)' }}>
@@ -35,6 +35,9 @@ const ClickHistoryList: React.FC<ClickHistoryListProps> = ({onClickDeleteHistory
                             <div className="w-4/5">
                                 <ProfileUser onClose={onClose} userData={userData} />
                             </div>
+                            <button className='w-1/5 flex justify-center items-center' onClick={() => onDeleteHistoryClickedUser(userId, userData.id)}>
+                                <CloseIcon className="!text-[20px]"/>
+                            </button>
                         </div>
                     )) : (
                         <div className="flex flex-1 justify-center items-center">

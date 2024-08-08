@@ -43,7 +43,6 @@ const CommentListModal: React.FC<ModalProps> = ({ postId, show, onClose }) => {
             commentId: commentId
         });
     };
-
     const handleReplyComment = () => {
         handleCreateComment(commentRequest, {
             onSuccess: () => {
@@ -69,6 +68,7 @@ const CommentListModal: React.FC<ModalProps> = ({ postId, show, onClose }) => {
         return commentData?.data.filter((comment: any) => comment.parentId === commentId);
     };
 
+    console.log(postById);
     const renderComments = (comments: any[], level = 0) => {
         return comments?.map((comment: any) => (
             <div key={comment?.id} className="flex flex-col">

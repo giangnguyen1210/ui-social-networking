@@ -10,7 +10,7 @@ export function useUserGetInfo(_params: IGetUserRequest) {
 	const token = Cookies.get('token')
 	return useQuery({
 		queryKey: ['useUserGetInfo', _params],
-		enabled: !!token &&!!_params,
+		enabled: !!token && !!_params,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
 			return UserService.getInfo(_params)
@@ -39,19 +39,19 @@ export function useGetAvatar(_param: number) {
 		enabled: !!token,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
-			const userRequest: IAvatarRequest = { id: Number(_param)};
+			const userRequest: IAvatarRequest = { id: Number(_param) };
 			return UserService.getAvatar(userRequest)
-			
+
 		}
 	})
 }
 
-export function useGetUserByKeyword(_params: IUserRequest){
+export function useGetUserByKeyword(_params: IUserRequest) {
 	const token = Cookies.get('token')
-	const id= _params.id
+	const id = _params.id
 	return useQuery({
 		queryKey: ['useGetUserByKeyword', id],
-		enabled: !!token &&!!_params.id,
+		enabled: !!token && !!_params.id,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
 			return UserService.getUserByKeyword(_params)
@@ -59,11 +59,11 @@ export function useGetUserByKeyword(_params: IUserRequest){
 	})
 }
 
-export function useGetHistorySearch(userId: number){
+export function useGetHistorySearch(userId: number) {
 	const token = Cookies.get('token')
 	return useQuery({
 		queryKey: ['useGetHistorySearch', userId],
-		enabled: !!token &&!!userId,
+		enabled: !!token && !!userId,
 		refetchOnWindowFocus: false,
 		queryFn: () => {
 			return UserService.getHistorySearch(userId)
@@ -84,10 +84,17 @@ export function useSaveHistorySearch() {
 
 export function useDeleteHistorySearch() {
 	return useMutation({
-	  mutationKey: ['useDeleteHistorySearch'],
-	  mutationFn: (userId: number) => UserService.deleteHistorySearch(userId),
+		mutationKey: ['useDeleteHistorySearch'],
+		mutationFn: (userId: number) => UserService.deleteHistorySearch(userId),
 	});
-  }
+}
+
+export function useDeleteHistorySearchClickedUser() {
+	return useMutation({
+		mutationKey: ['useDeleteHistorySearchClickedUser'],
+		mutationFn: (param: IUserSearch) => UserService.deleteHistorySearchClickedUser(param.id, param.clickUserId),
+	});
+}
 
 export function useUpdateAvatar() {
 	return useMutation({
@@ -97,7 +104,7 @@ export function useUpdateAvatar() {
 		},
 		onSuccess: (res: IHttpResponseDto<IBaseResponse>) => {
 			if (res.errorCode === "OK") {
-				
+
 			}
 			if (res.errorCode !== "OK") {
 			}
@@ -113,7 +120,7 @@ export function useUpdateUserInfo() {
 		},
 		onSuccess: (res: IHttpResponseDto<IBaseResponse>) => {
 			if (res.errorCode === "OK") {
-				
+
 			}
 			if (res.errorCode !== "OK") {
 			}

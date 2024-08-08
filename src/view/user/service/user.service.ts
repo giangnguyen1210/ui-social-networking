@@ -54,6 +54,14 @@ export const UserService: any = {
 		))
 		return response
 	},
+	deleteHistorySearchClickedUser: async (userId: number, clickUserId: number) => {
+		const response: IBaseResponse = await httpClient.delete(API_ROUTES.user.deleteHistorySearchClickedUser(
+			userId,
+			clickUserId
+		))
+		return response
+	},
+	
 	getListGender: async () => {
 		const response: IBaseResponse = await httpClient.get(API_ROUTES.user.getListGender)
 		return response
@@ -62,8 +70,9 @@ export const UserService: any = {
 		const response: AxiosResponse<IBaseResponse, any> = await httpClient.post(API_ROUTES.user.updateUser, {
 			bio: _params.bio,
 			name: _params.name,
+			username: _params.username,
 			birthday: _params.birthday,
-			gender: _params.gender,
+			genderId: _params.gender,
 			id: _params.id
 		})
 

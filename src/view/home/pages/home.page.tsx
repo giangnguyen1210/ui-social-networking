@@ -23,9 +23,8 @@ interface IPost {
 	id: string;
 	createdAt: string;
 	title: string;
-	filePost: { id: string; dataFile: string }[];
+	filePost: { id: string; dataFile: string; mimeType: string }[];
 }
-
 interface IListPost {
 	// posts: IPost[];
 	// username: string;
@@ -48,7 +47,7 @@ function HomePageView() {
 		id: Number(userId)
 	}
 	const { data: post, isSuccess: isGetPost } = useGetPostByUserId(userRequest);
-    const { data: userData } = useUserGetInfoById(Number(userId));
+	const { data: userData } = useUserGetInfoById(Number(userId));
 
 	//   console.log(userId);
 	const { data: usersFollowing, isSuccess: isUsersFollowerSucess } = useGetFollowingByUser(userRequest);
@@ -72,7 +71,7 @@ function HomePageView() {
 						<CardHeader
 							onClick={() => gotoDetail()}
 							avatar={
-								<AvatarComponent width={40} height={40}  avatarData={userData?.avatarData?.dataFile}/>
+								<AvatarComponent width={40} height={40} avatarData={userData?.avatarData?.dataFile} />
 							}
 							action={
 								<IconButton aria-label="settings">

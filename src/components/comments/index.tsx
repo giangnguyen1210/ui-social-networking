@@ -15,6 +15,7 @@ interface ICommentProps {
 const Comments: React.FC<ICommentProps> = ({ postId }) => {
 	const { open, close, setModalOptions, isOpen } = useAppModal()
 
+    console.log('postId', postId);
     const userId = tokenDecode();
     // const [content, setContent] = useState<string>('');
     const [dataComment, setDataComment] = useState({

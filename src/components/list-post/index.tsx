@@ -30,19 +30,12 @@ interface IListPost {
 }
 
 export const ListPost: React.FC<IListPost> = ({ followings }) => {
-  const handleLikePost = (id: string) => {
-
-  }
   const userId = tokenDecode()
 
   const userRequest: IUserRequest = {
     id: Number(followings?.id)
   }
-  const userCurrentRequest: IUserRequest = {
-    id: Number(userId)
-  }
   const { data: postsByUserId, isSuccess: isGetPostSuccess } = useGetPostByFollowing(userRequest);
-  const { data: post, isSuccess: isGetPost } = useGetPostByUserId(userCurrentRequest);
 
   const router = useRouter()
   const gotoDetail = (_username: string) => {

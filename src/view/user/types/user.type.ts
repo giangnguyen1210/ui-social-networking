@@ -71,7 +71,7 @@ export interface IUpdateUserRequest{
     bio: string;
     username:string;
     birthday: string;
-    gender: number;
+    gender: string;
 }
 
 export interface IGetChatMessagesRequest{
